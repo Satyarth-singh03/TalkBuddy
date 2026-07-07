@@ -1,0 +1,25 @@
+# ============================================================
+#  .gitignore — Files that should NEVER be pushed to GitHub
+#  The .env files contain API keys and private keys
+#  node_modules is huge (100MB+) and can be reinstalled with npm install
+# ============================================================
+
+# Secret files — NEVER share these
+.env
+.env.local
+.env.production
+
+# Node.js dependencies — reinstall with: npm install
+node_modules/
+
+# Build output
+dist/
+build/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
