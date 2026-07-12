@@ -21,8 +21,13 @@ const app = express();
 // cors() allows our React frontend (port 5173) to talk to this server (port 5000)
 // Without this, browsers block requests between different ports for security
 app.use(cors({
-  origin: 'http://localhost:5173' // Only allow requests from our React app
+  origin: [
+    'http://localhost:5173',
+    'https://talk-buddy-pink.vercel.app'
+  ],
+  credentials: true
 }));
+
 
 // express.json() lets our server understand JSON data sent in request bodies
 // When frontend sends { "message": "hello" }, this parses it so we can use it
