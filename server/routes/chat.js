@@ -17,7 +17,7 @@ const { getAIReply, getRewrittenMessage } = require('../services/gemini');
 //  3. We call Gemini TWICE (reply + rewrite) at the same time
 //  4. We send both results back to the frontend
 // ============================================================
-router.post('/', verifyToken, async (req, res) => {
+router.post('/', async (req, res) => {
   // Step 1: Get the message the user typed
   const { message } = req.body;
 
