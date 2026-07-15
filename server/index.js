@@ -51,7 +51,6 @@ app.get('/', (req, res) => {
 // process.env.PORT reads from .env file; if not set, use 5000
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  // This message shows in your terminal when the server starts
-  console.log(`✅ TalkBuddy server running on http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server listening on ${PORT}`);
 });
