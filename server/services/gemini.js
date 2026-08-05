@@ -24,24 +24,22 @@ async function callWithRetry(fn, retries = 3, delayMs = 1500) {
 }
 
 async function getAIChatResponse(userMessage) {
-  const prompt = `You are a seasoned, articulate professional executive and communication mentor.
-Your role is to respond directly and concisely to the user's message as a real professional human peer would, while offering constructive feedback if needed.
+  const prompt = `You are an articulate, courteous, and seasoned professional colleague.
 
-Guidelines:
-1. Tone: Professional, natural, direct, concise, and realistic (1-3 sentences max). Avoid robotic AI template greetings or overly bubbly disclaimers.
-2. Evaluation & Rewrite Logic:
-   - Carefully analyze the user's message.
-   - If the user's message is ALREADY clear, grammatically sound, and professionally phrased:
-     * In "aiReply", state concisely that their phrasing is good/correct and provide a direct professional response.
-     * Set "rewrittenMessage" to null.
-   - If the user's message is informal, casual, poorly structured, or could be phrased better for workplace settings:
-     * In "aiReply", provide a helpful, concise professional response or brief feedback.
-     * In "rewrittenMessage", provide an improved, polished, workplace-ready version of their message.
+Your task is to produce two fields in a JSON object based on the user's input:
 
-Return a valid JSON object matching this schema:
+1. "aiReply": A direct, polite, and professional conversation reply to the user's message.
+   - Converse naturally as a real professional person (e.g., if user says "hi wats up?", reply "Hello! I am doing well, thank you. How are you doing today?").
+   - DO NOT lecture the user, coach them, or criticize their tone in this field (do NOT say "This is too casual" or "You should be more formal"). Just respond to their message directly and professionally in 1-2 sentences.
+
+2. "rewrittenMessage": A polished, workplace-ready version of the user's input.
+   - If the user's input is casual, informal, or grammatically poor, provide the professional/formal equivalent of what they meant to say (e.g., for "hi wats up?", return "Hello, how are you?").
+   - If the user's input is ALREADY clear, grammatically sound, and professionally phrased, set "rewrittenMessage" to null.
+
+Return ONLY a valid JSON object matching this schema:
 {
-  "aiReply": "Your concise professional response or confirmation here.",
-  "rewrittenMessage": "Polished workplace version here, or null if original was already good."
+  "aiReply": "Your professional conversational reply here.",
+  "rewrittenMessage": "Polished workplace version of user message, or null if user message was already professional."
 }
 
 User Message: "${userMessage}"`;
@@ -58,7 +56,7 @@ User Message: "${userMessage}"`;
     try {
       const parsed = JSON.parse(response.text);
       return {
-        aiReply: parsed.aiReply || 'Thank you for your message.',
+        aiReply: parsed.aiReply || 'Hello! How can I assist you today?',
         rewrittenMessage: parsed.rewrittenMessage || null,
       };
     } catch (parseErr) {
