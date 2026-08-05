@@ -1,56 +1,38 @@
-/* ============================================================
-   TalkBuddy — Global CSS Design System
-   All colors, fonts, animations, and base styles live here
-   ============================================================ */
-
-/* ── Google Fonts ──────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
-/* ── CSS Variables (Design Tokens) ────────────────────────────
-   Variables let us define colors ONCE and reuse everywhere.
-   Change a color here → it updates everywhere automatically.
-   ─────────────────────────────────────────────────────────── */
 :root {
-  /* Colors */
-  --bg-primary:      #0D1117;   /* Main dark background */
-  --bg-secondary:    #161B22;   /* Slightly lighter cards */
-  --bg-tertiary:     #21262D;   /* Input fields, hover states */
-  --glass:           rgba(255, 255, 255, 0.05);
-  --glass-border:    rgba(255, 255, 255, 0.10);
+  --bg-primary: #0D1117;
+  --bg-secondary: #161B22;
+  --bg-tertiary: #21262D;
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.10);
 
-  /* Brand Gradient */
-  --gradient-main:   linear-gradient(135deg, #4F8EF7 0%, #7C3AED 100%);
+  --gradient-main: linear-gradient(135deg, #4F8EF7 0%, #7C3AED 100%);
   --gradient-subtle: linear-gradient(135deg, rgba(79,142,247,0.15), rgba(124,58,237,0.15));
 
-  /* Accent Colors */
-  --blue:   #4F8EF7;
+  --blue: #4F8EF7;
   --purple: #7C3AED;
-  --green:  #3FB950;
-  --red:    #F85149;
+  --green: #3FB950;
+  --red: #F85149;
   --orange: #FF9A3C;
 
-  /* Text */
-  --text-primary:  #E6EDF3;
-  --text-secondary:#8B949E;
-  --text-muted:    #484F58;
+  --text-primary: #E6EDF3;
+  --text-secondary: #8B949E;
+  --text-muted: #484F58;
 
-  /* Typography */
   --font-main: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 
-  /* Spacing */
-  --radius-sm:  8px;
-  --radius-md:  12px;
-  --radius-lg:  20px;
-  --radius-xl:  28px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
 
-  /* Shadows */
-  --shadow-blue:   0 0 30px rgba(79, 142, 247, 0.2);
+  --shadow-blue: 0 0 30px rgba(79, 142, 247, 0.2);
   --shadow-purple: 0 0 30px rgba(124, 58, 237, 0.2);
-  --shadow-card:   0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
-/* ── Reset & Base ──────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -68,45 +50,42 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Scrollbar Styling ─────────────────────────────────────── */
-::-webkit-scrollbar       { width: 6px; }
-::-webkit-scrollbar-track  { background: var(--bg-secondary); }
-::-webkit-scrollbar-thumb  { background: var(--bg-tertiary); border-radius: 3px; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--bg-tertiary); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
-/* ── Animations ────────────────────────────────────────────── */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
   from { opacity: 0; }
-  to   { opacity: 1; }
+  to { opacity: 1; }
 }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
+  50% { opacity: 0.4; }
 }
 
 @keyframes gradientShift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
 @keyframes slideInLeft {
   from { opacity: 0; transform: translateX(-20px); }
-  to   { opacity: 1; transform: translateX(0); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes slideInRight {
   from { opacity: 0; transform: translateX(20px); }
-  to   { opacity: 1; transform: translateX(0); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
-/* ── Utility Classes ───────────────────────────────────────── */
 .gradient-text {
   background: var(--gradient-main);
   -webkit-background-clip: text;
@@ -121,7 +100,6 @@ body {
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* ── Login Page ────────────────────────────────────────────── */
 .login-page {
   min-height: 100vh;
   display: flex;
@@ -132,7 +110,6 @@ body {
   padding: 20px;
 }
 
-/* Animated gradient blobs in the background */
 .login-page::before,
 .login-page::after {
   content: '';
@@ -293,7 +270,6 @@ body {
   animation: fadeIn 0.3s ease;
 }
 
-/* ── Chat Page Layout ──────────────────────────────────────── */
 .chat-page {
   display: flex;
   flex-direction: column;
@@ -301,7 +277,6 @@ body {
   background: var(--bg-primary);
 }
 
-/* ── Navbar ────────────────────────────────────────────────── */
 .navbar {
   display: flex;
   align-items: center;
@@ -367,7 +342,6 @@ body {
   color: var(--red);
 }
 
-/* ── Chat Area ─────────────────────────────────────────────── */
 .chat-area {
   flex: 1;
   overflow-y: auto;
@@ -377,7 +351,6 @@ body {
   gap: 24px;
 }
 
-/* Welcome Message */
 .welcome-message {
   display: flex;
   flex-direction: column;
@@ -442,7 +415,6 @@ body {
   transform: translateY(-1px);
 }
 
-/* Message Group (holds user bubble + AI response + rewrite box) */
 .message-group {
   display: flex;
   flex-direction: column;
@@ -450,7 +422,6 @@ body {
   animation: fadeInUp 0.4s ease;
 }
 
-/* User Message (right side) */
 .message-user {
   display: flex;
   justify-content: flex-end;
@@ -468,7 +439,6 @@ body {
   box-shadow: var(--shadow-blue);
 }
 
-/* AI Message (left side) */
 .message-ai {
   display: flex;
   gap: 12px;
@@ -500,7 +470,6 @@ body {
   line-height: 1.7;
 }
 
-/* Rewrite Box (the "better version" box) */
 .rewrite-box {
   margin-left: 48px;
   padding: 14px 18px;
@@ -543,7 +512,6 @@ body {
 
 .copy-btn:hover { color: var(--green); background: rgba(63,185,80,0.1); }
 
-/* ── Typing Indicator ──────────────────────────────────────── */
 .typing-indicator {
   display: flex;
   align-items: center;
@@ -571,7 +539,6 @@ body {
 .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
 .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
 
-/* ── Message Input ─────────────────────────────────────────── */
 .input-panel {
   padding: 16px 24px;
   background: var(--bg-secondary);
@@ -640,3 +607,4 @@ body {
   color: var(--text-muted);
   margin-top: 10px;
 }
+

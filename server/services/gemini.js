@@ -1,21 +1,8 @@
-// ============================================================
-//  TalkBuddy — Gemini AI Service
-//  This file handles ALL communication with Google's Gemini AI
-//  Includes automatic retry logic for high demand (503) & rate limits
-// ============================================================
-
 const { GoogleGenAI } = require('@google/genai');
 
-// Create a Gemini client using our API key from .env
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
-// "gemini-2.5-flash" is the only active model available on this key
 const MODEL = 'gemini-2.5-flash';
 
-// ============================================================
-//  Helper: callWithRetry
-//  Automatically retries a function if it fails due to network/demand
-// ============================================================
 async function callWithRetry(fn, retries = 3, delayMs = 1500) {
   try {
     return await fn();
@@ -28,58 +15,60 @@ async function callWithRetry(fn, retries = 3, delayMs = 1500) {
       errorText.includes('429');
 
     if (retries > 0 && isRetryable) {
-      console.log(`⚠️ Gemini busy or rate-limited. Retrying in ${delayMs}ms... (${retries} attempts left)`);
-      // Wait for delayMs
+      console.log(`Gemini busy or rate-limited. Retrying in ${delayMs}ms... (${retries} attempts left)`);
       await new Promise(resolve => setTimeout(resolve, delayMs));
-      // Retry with double the delay (exponential backoff)
       return callWithRetry(fn, retries - 1, delayMs * 2);
     }
-    // If no retries left or not a retryable error, throw it
     throw error;
   }
 }
 
-// ============================================================
-//  Function 1: getAIReply
-// ============================================================
-async function getAIReply(userMessage) {
-  const prompt = `You are TalkBuddy, a friendly and professional communication coach.
-Your job is to help users improve their professional communication skills.
-Respond to the user's message in a warm, helpful, and professional tone.
-Keep your response concise (2-4 sentences max).
-If the user is asking something casual, gently guide them toward professional phrasing.
+async function getAIChatResponse(userMessage) {
+  const prompt = `You are a seasoned, articulate professional executive and communication mentor.
+Your role is to respond directly and concisely to the user's message as a real professional human peer would, while offering constructive feedback if needed.
 
-User message: "${userMessage}"`;
+Guidelines:
+1. Tone: Professional, natural, direct, concise, and realistic (1-3 sentences max). Avoid robotic AI template greetings or overly bubbly disclaimers.
+2. Evaluation & Rewrite Logic:
+   - Carefully analyze the user's message.
+   - If the user's message is ALREADY clear, grammatically sound, and professionally phrased:
+     * In "aiReply", state concisely that their phrasing is good/correct and provide a direct professional response.
+     * Set "rewrittenMessage" to null.
+   - If the user's message is informal, casual, poorly structured, or could be phrased better for workplace settings:
+     * In "aiReply", provide a helpful, concise professional response or brief feedback.
+     * In "rewrittenMessage", provide an improved, polished, workplace-ready version of their message.
 
-  // Wrap the call in our retry function
+Return a valid JSON object matching this schema:
+{
+  "aiReply": "Your concise professional response or confirmation here.",
+  "rewrittenMessage": "Polished workplace version here, or null if original was already good."
+}
+
+User Message: "${userMessage}"`;
+
   return callWithRetry(async () => {
     const response = await ai.models.generateContent({
       model: MODEL,
       contents: prompt,
+      config: {
+        responseMimeType: 'application/json',
+      },
     });
-    return response.text;
+
+    try {
+      const parsed = JSON.parse(response.text);
+      return {
+        aiReply: parsed.aiReply || 'Thank you for your message.',
+        rewrittenMessage: parsed.rewrittenMessage || null,
+      };
+    } catch (parseErr) {
+      console.error('Failed to parse Gemini JSON response:', response.text);
+      return {
+        aiReply: response.text,
+        rewrittenMessage: null,
+      };
+    }
   });
 }
 
-// ============================================================
-//  Function 2: getRewrittenMessage
-// ============================================================
-async function getRewrittenMessage(userMessage) {
-  const prompt = `Rewrite the following message to make it more professional, 
-clear, and suitable for a workplace or formal setting.
-Return ONLY the rewritten message with no extra explanation or labels.
-Keep the same meaning but improve the tone, grammar, and structure.
-
-Original message: "${userMessage}"`;
-
-  // Wrap the call in our retry function
-  return callWithRetry(async () => {
-    const response = await ai.models.generateContent({
-      model: MODEL,
-      contents: prompt,
-    });
-    return response.text;
-  });
-}
-
-module.exports = { getAIReply, getRewrittenMessage };
+module.exports = { getAIChatResponse };
