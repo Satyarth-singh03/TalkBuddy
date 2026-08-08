@@ -3,15 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase/firebaseConfig';
 import axios from 'axios';
+import Logo from '../components/Logo';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
-const STARTER_CHIPS = [
-  'How do I introduce myself?',
-  'How should I ask for help?',
-  'How do I interact with others?',
-  'How do I say no professionally?',
-];
 
 function ChatPage() {
   const navigate = useNavigate();
@@ -93,7 +87,7 @@ function ChatPage() {
     <div className="chat-page">
       <nav className="navbar">
         <div className="navbar-brand">
-          <span className="brand-icon">🤖</span>
+          <Logo size={32} variant="silhouette" className="brand-icon" />
           <div>
             <h2>TalkBuddy</h2>
             <span className="brand-tagline">Professional Communication Coach</span>
@@ -110,22 +104,11 @@ function ChatPage() {
       <div className="chat-area">
         {messages.length === 0 && (
           <div className="welcome-message">
-            <div className="welcome-avatar">🤖</div>
+            <Logo size={80} variant="primary" style={{ marginBottom: '20px', filter: 'drop-shadow(var(--shadow-red))' }} />
             <h2>Hello! I'm TalkBuddy</h2>
             <p>
               I'm here to help you upgrade your professional communication skills.
             </p>
-            <div className="welcome-chips">
-              {STARTER_CHIPS.map((chip, i) => (
-                <button
-                  key={i}
-                  className="chip"
-                  onClick={() => sendMessage(chip)}
-                >
-                  {chip}
-                </button>
-              ))}
-            </div>
           </div>
         )}
 
@@ -140,7 +123,7 @@ function ChatPage() {
             {msg.type === 'ai' && (
               <>
                 <div className="message-ai">
-                  <div className="ai-avatar">🤖</div>
+                  <Logo size={36} variant="primary" style={{ flexShrink: 0 }} />
                   <div className="bubble-ai">{msg.text}</div>
                 </div>
 
@@ -167,7 +150,7 @@ function ChatPage() {
 
         {isLoading && (
           <div className="typing-indicator">
-            <div className="ai-avatar">🤖</div>
+            <Logo size={36} variant="primary" style={{ flexShrink: 0 }} />
             <div className="typing-dots">
               <span /><span /><span />
             </div>

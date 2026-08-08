@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { auth } from '../firebase/firebaseConfig';
+import Logo from '../components/Logo';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -55,7 +56,9 @@ function LoginPage() {
     <div className="login-page">
       <div className="login-card glass-card">
         <div className="login-logo">
-          <span className="logo-icon">🤖</span>
+          <div className="logo-icon" style={{ display: 'flex', justifyContent: 'center' }}>
+            <Logo size={64} />
+          </div>
           <h1>TalkBuddy</h1>
           <p>Your AI-powered professional communication coach</p>
         </div>
